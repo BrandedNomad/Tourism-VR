@@ -1,23 +1,128 @@
 // This file contains the boilerplate to execute your React app.
 // If you want to modify your application's content, start in "index.js"
 
-import {ReactInstance} from 'react-360-web';
+import {ReactInstance, Surface, Module} from 'react-360-web';
+
+let introPanel;
+let introRoot;
+let marketPanel;
+let museumPanel;
+let restaurantPanel;
+let shoppingPanel;
+let r360;
 
 function init(bundle, parent, options = {}) {
-  const r360 = new ReactInstance(bundle, parent, {
+  r360 = new ReactInstance(bundle, parent, {
     // Add custom options here
     fullScreen: true,
+    nativeModules:[
+        new surfaceModule(),
+    ],
     ...options,
   });
 
-  // Render your app content to the default cylinder surface
-  r360.renderToSurface(
-    r360.createRoot('Tourism_VR', { /* initial props */ }),
-    r360.getDefaultSurface()
+  introPanel = new Surface(
+    500,
+    400,
+    Surface.SurfaceShape.Cylinder
   );
 
-  // Load the initial environment
-  r360.compositor.setBackground(r360.getAssetURL('360_world.jpg'));
+  introRoot = r360.renderToSurface(
+    r360.createRoot('Tourism_VR', {}),
+    introPanel
+  );
+
+  marketPanel = new Surface(
+    100,
+    100,
+    Surface.SurfaceShape.Flat
+  )
+
+  marketPanel.setAngle(
+    0.2,
+    0
+  );
+
+  museumPanel = new Surface(
+    100,
+    100,
+    Surface.SurfaceShape.Flat
+  )
+
+  museumPanel.setAngle(
+    Math.PI / 2,
+    0
+  );
+
+  restaurantPanel = new Surface(
+    100,
+    100,
+    Surface.SurfaceShape.Flat
+  )
+
+  restaurantPanel.setAngle(
+    -Math.PI / 2,
+    0
+  );
+
+  shoppingPanel = new Surface(
+    100,
+    100,
+    Surface.SurfaceShape.Flat
+  );
+
+  shoppingPanel.setAngle(
+    3.6,
+    0
+  );
+
+
+
+  r360.compositor.setBackground(r360.getAssetURL('gdansk.jpg'));
+}
+
+class surfaceModule extends Module {
+  constructor(){
+    super('surfaceModule')
+  }
+
+  start(){
+
+    r360.renderToSurface(
+        r360.createRoot('InfoPanel',{
+          id: 'market',
+          text: 'Browse our incredible market'
+        }),
+        marketPanel
+    )
+
+    r360.renderToSurface(
+        r360.createRoot('InfoPanel',{
+          id:'shopping',
+          text:'Shop util you drop!'
+        }),
+        shoppingPanel
+    )
+
+    r360.renderToSurface(
+        r360.createRoot('InfoPanel',{
+          id:'museum',
+          text:'The life of Pablo Picasso: Blue.'
+        }),
+        museumPanel
+    )
+
+    r360.renderToSurface(
+        r360.createRoot('InfoPanel',{
+          id:'restaurant',
+          text:'Enjoy a delicious beer at our restaurants'
+        }),
+        restaurantPanel
+    )
+
+    r360.detachRoot(introRoot)
+  }
+
 }
 
 window.React360 = {init};
