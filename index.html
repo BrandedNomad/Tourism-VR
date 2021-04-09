@@ -23,13 +23,14 @@
 
 </div>
 
-<script src="./client.bundle.js"></script>
+<script src="./client.bundle?platform=vr"></script>
 <script>
     // Initialize the React 360 application
     function enterApp() {
+        // Initialize the React 360 application
         React360.init(
-            'index.bundle.js',
-            document.getElementById('initialize'),
+            'index.bundle?platform=vr&dev=true',
+            document.getElementById("initialize"),
             {
                 assetRoot: 'static_assets/',
             }
@@ -39,5 +40,6 @@
         elem.parentNode.removeChild(elem);
     }
 </script>
+
 </body>
 </html>
