@@ -21,12 +21,46 @@ class InfoPanel extends React.Component{
     }
   }
 
+  transformDisplay(id){
+    this._changeSurfaceDimensions(500,400,id);
+    this.setState({img:{
+      name:`${id}.jpg`,
+      width:500,
+      height:300
+    }});
+  }
+
+  _changeSurfaceDimensions(width,height,id){
+    surfaceModule.resizeSurface(width,height,id)
+  }
+
+  resetPanel(id){
+    this._changeSurfaceDimensions(100,100,id);
+    this.setState({img:{
+        name: `info.png` ,
+        width:100,
+        height:100,
+      }})
+  }
+
+
   render(){
     let {img} = this.state;
 
     return(
-      <View style={styles.displayPanel}>
-        <Image source={asset(`${img.name}`)} style={{width: img.width, height:img.height}}/>
+      <View
+
+          style={styles.displayPanel}
+          onEnter={()=> this.transformDisplay(this.props.id)}
+          onExit={()=> this.resetPanel(this.props.id)}
+      >
+        <Image
+            source={asset(`${img.name}`)}
+            style={{width: img.width, height:img.height}}
+        />
+        <View style={styles.attractionBox}>
+          <Text style={styles.attractionText}>{this.props.text}</Text>
+        </View>
       </View>
     )
   }
@@ -38,7 +72,7 @@ class Tourism_VR extends React.Component {
     return (
       <View>
         <Image source={asset('poland.png')} style={{width:500, height:300}}/>
-        <View styel={styles.attractionBox}>
+        <View style={styles.attractionBox}>
           <VrButton
               onClick={()=>{
                 surfaceModule.start()
@@ -56,22 +90,21 @@ class Tourism_VR extends React.Component {
 };
 
 const styles = StyleSheet.create({
-  panel: {
-    // Fill the entire surface
-    width: 1000,
-    height: 600,
-    backgroundColor: 'rgba(255, 255, 255, 0.4)',
-    justifyContent: 'center',
-    alignItems: 'center',
+  displayPanel: {
+    width: 100,
+    height: 100,
+    flexDirection:'column'
   },
-  greetingBox: {
+  attractionBox: {
     padding: 20,
-    backgroundColor: '#000000',
-    borderColor: '#639dda',
+    backgroundColor: '#F7F7F7',
+    borderColor: '#C4002F',
     borderWidth: 2,
+    width: 500
   },
-  greeting: {
+  attractionText: {
     fontSize: 30,
+    color:'#C4002f'
   },
 });
 

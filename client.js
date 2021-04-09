@@ -91,7 +91,7 @@ class surfaceModule extends Module {
     r360.renderToSurface(
         r360.createRoot('InfoPanel',{
           id: 'market',
-          text: 'Browse our incredible market'
+          text: 'Browse our incredible fresh market'
         }),
         marketPanel
     )
@@ -99,7 +99,7 @@ class surfaceModule extends Module {
     r360.renderToSurface(
         r360.createRoot('InfoPanel',{
           id:'shopping',
-          text:'Shop util you drop!'
+          text:'Shop until you drop!'
         }),
         shoppingPanel
     )
@@ -115,12 +115,24 @@ class surfaceModule extends Module {
     r360.renderToSurface(
         r360.createRoot('InfoPanel',{
           id:'restaurant',
-          text:'Enjoy a delicious beer at our restaurants'
+          text:'Enjoy refreshing Polish beer at our restaurants'
         }),
         restaurantPanel
     )
 
     r360.detachRoot(introRoot)
+  }
+
+  resizeSurface(width,height,id){
+      if(id==='museum'){
+          museumPanel.resize(width, height);
+      } else if (id === 'restaurant') {
+          restaurantPanel.resize(width,height);
+      } else if (id === 'shopping'){
+          shoppingPanel.resize(width,height);
+      } else if (id === 'market'){
+          marketPanel.resize(width,height);
+      }
   }
 
 }
